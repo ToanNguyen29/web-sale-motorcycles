@@ -1,5 +1,5 @@
-Create database web_programing_database;
-Use web_programing_database;
+Create database webSale_motorcycles_database;
+Use webSale_motorcycles_database;
 
 CREATE TABLE MOTORCYCLES(
 	motors_id INT PRIMARY KEY,
@@ -10,8 +10,6 @@ CREATE TABLE MOTORCYCLES(
     style varchar(50),
     quantity INT not null default 0,
     motor_desc text,
-    prepaid_price FLOAT,
-    price FLOAT,
     check_sale ENUM('sale','stop sale') not null default 'sale',
     constraint motors_id_name_ver unique(motors_id, motors_name, version)
 );
@@ -20,8 +18,10 @@ CREATE TABLE A_MOTORCYCLE(
 	a_motor_id INT PRIMARY KEY,
 	motors_id INT not null,
 	color varchar(20),
-	check_sold ENUM('sold','not sold yet') default 'not sold yet',
-    foreign key(motors_id) References 	MOTORCYCLES(motors_id)
+    prepaid_price FLOAT,
+    price FLOAT,
+	check_sold ENUM('sold','ordered','not sold yet') default 'not sold yet',
+    foreign key(motors_id) References MOTORCYCLES(motors_id)
 );
 
 CREATE TABLE SPECIFICATION(
@@ -44,15 +44,15 @@ CREATE TABLE ROLE(
 CREATE TABLE USER(
 	user_id INT(5) zerofill PRIMARY KEY auto_increment ,
 	role_id INT,
-    login_name varchar(30) unique not null,
+    email varchar(50),
     user_pass varchar(50) not null,
     user_name varchar(50) not null,
+    cccd Int,
     num_phone INT,
-    email varchar(50),
     address varchar(100),
-    money_purchased INT default 0,
     check_delete ENUM('still','deleted') default 'still',
-	foreign key(role_id) References ROLE(role_id)
+	foreign key(role_id) References ROLE(role_id),
+    constraint email_check unique(email, check_delete)
 );
 
 CREATE TABLE BLOG(
@@ -64,12 +64,16 @@ CREATE TABLE BLOG(
 
 CREATE TABLE PAYMENT(
 	payment_id INT(6) zerofill PRIMARY KEY auto_increment,
-	user_id INT(5) zerofill not null,
+	user_id INT(5) zerofill,
 	a_motor_id INT not null,
+    name_cus varchar(50),
+    cccd Int,
     date_buy datetime,
+    date_prepaid datetime,
+    money_prepaid float,
     price FLOAT,
     payment_menthod varchar(30),
-    status ENUM('unpaid','prepaid','canceled','paid') default 'unpaid',
+    status ENUM('not paid', 'paid', 'successful', 'cancel'),
 	foreign key(a_motor_id) References A_MOTORCYCLE(a_motor_id),
     foreign key(user_id) References USER(user_id)
 );
