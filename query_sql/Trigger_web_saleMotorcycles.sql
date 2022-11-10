@@ -1,4 +1,4 @@
-Use sale_motorcycles_database;
+Use web_Sale_motorcycles;
 
 -- 1. trigger tự tạo 1 row mới trong bảng specification khi tạo 1 row mới trong bảng motorcycles
 create trigger new_spec 
@@ -99,3 +99,36 @@ create trigger insert_user
 after insert on user
 for each row
 update user set role_id = ( select role_id from role where role.role_name = "user") where user_id = new.user_id;
+
+-- 13. Sau khi update a_motorcycle thì sẽ tự động set date_update bằng current_timestamp
+delimiter // 
+create trigger date_update_a_motorcycle
+after update on a_motorcycle
+for each row
+begin
+if old.date_update = new.date_update then
+update a_motorcycle set date_update = current_timestamp() where date_insert = old.date_insert;
+end if;
+end;
+
+-- 14. Sau khi update blog thì sữ tự động set date_update bằng curent_timestamp
+delimiter // 
+create trigger date_update_blog
+after update on blog
+for each row
+begin
+if old.date_update = new.date_update then
+update a_motorcycle set date_update = current_timestamp() where date_write = old.date_write;
+end if;
+end;
+
+
+
+
+
+
+ 
+
+
+
+
