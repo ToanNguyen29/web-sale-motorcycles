@@ -49,8 +49,8 @@ CREATE TABLE USER(
     	email varchar(50),
     	user_pass varchar(50) not null,
     	user_name varchar(50) not null,
-    	cccd Int,
-    	num_phone INT,
+    	cccd varchar(20),
+    	num_phone varchar(20),
     	address varchar(100),
     	check_delete ENUM('still','deleted') default 'still',
 	foreign key(role_id) References ROLE(role_id),
@@ -70,7 +70,7 @@ CREATE TABLE PAYMENT(
 	user_id INT(5) zerofill,
 	a_motor_id INT,
     	name_cus varchar(50),
-    	cccd Int,
+    	cccd varchar(20),
     	date_buy datetime,
     	date_prepaid datetime,
     	money_prepaid float,
@@ -91,6 +91,4 @@ CREATE TABLE COMMENT(
 	 foreign key(blog_id) References BLOG(blog_id),
 	 foreign key(user_id) References USER(user_id)
 );
-
-
 
