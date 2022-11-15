@@ -96,9 +96,9 @@ end;
  
 -- 12. trigger sau khi thêm một cột trong user thì phần role_id của cột đó sẽ tự set thành role_id có role_name = user
 create trigger insert_user
-after insert on user
+before insert on user
 for each row
-update user set role_id = ( select role_id from role where role.role_name = "user") where user_id = new.user_id;
+set new.role_id = (select role_id from role where role_name = "user");
 
 -- 13. Sau khi update a_motorcycle thì sẽ tự động set date_update bằng current_timestamp
 delimiter // 
